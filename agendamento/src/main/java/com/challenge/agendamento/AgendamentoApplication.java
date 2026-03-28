@@ -10,4 +10,6 @@ public class AgendamentoApplication {
 		SpringApplication.run(AgendamentoApplication.class, args);
 	}
 
+
+
 }
