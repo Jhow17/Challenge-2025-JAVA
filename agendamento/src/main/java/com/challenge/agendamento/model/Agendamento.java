@@ -2,12 +2,16 @@ package com.challenge.agendamento.model;
 
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "agendamento")
 public class Agendamento {
     @Id
@@ -20,29 +24,29 @@ public class Agendamento {
     @Column(nullable = false, length = 400)
     private String descricao;
 
-    @Column(name = "paciente", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "paciente_id", nullable = false)
     private Paciente paciente;
 
-
-
-    @Column(name = "medico", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "medico_id", nullable = false)
     private Medico medico;
 
     @Column(name = "data_inicio", nullable = false)
-    private String dataInicio ;
+    private LocalDateTime dataInicio ;
 
     @Column(name = "data_fim", nullable = false)
-    private String dataFim ;
+    private LocalDateTime dataFim ;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 28)
     private StatusAgendamento statusAgendamento;
 
     @Column(name = "criado_em", nullable = false)
-    private String criadoEm;
+    private LocalDateTime criadoEm;
 
     @Column(name = "atualizado_em", nullable = false)
-    private String atualizadoEm;
+    private LocalDateTime atualizadoEm;
 
 
 

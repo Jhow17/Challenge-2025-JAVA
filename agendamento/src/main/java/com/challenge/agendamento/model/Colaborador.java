@@ -11,12 +11,11 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "pacientes")
-public class Paciente {
-
+@Table(name = "colaboradores")
+public class Colaborador {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long idColaborador;
 
     @Column(nullable = false)
     private String nome;
@@ -26,28 +25,15 @@ public class Paciente {
 
     private LocalDate dataNascimento;
 
-    private String sexo;
-
-    private Double peso;
-    private Double altura;
-
-    private String telefone;
-    private String porOndeNosConheceu;
-
     // Relacionamento com a tabela de login
+    // CascadeType.ALL se deleta o colaborador tambem deleta o usuario associado
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "usuario_id", referencedColumnName = "id")
     private Usuario usuario;
 
 
-    //para o banco ignorar nao vai virar coluna
-    @Transient
-    public Double getImc() {
-        if (this.peso != null && this.altura != null && this.altura > 0) {
-            return this.peso / (this.altura * this.altura);
-        }
-        return null;
-    }
+
+
 
 
 }
