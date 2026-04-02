@@ -7,11 +7,16 @@ import org.antlr.v4.runtime.misc.NotNull;
 import java.time.LocalDateTime;
 
 public record AgendamentoResponseDTO(
-        @NotBlank @Size(max = 128) String procedimento,
-        @Size(max = 4000) String descricao,
-        @NotNull LocalDateTime dataInicio,
-        @NotNull LocalDateTime dataFim,
-        @NotBlank  Paciente paciente
+        Long id,
+        String procedimento,
+        String descricao,
+        LocalDateTime dataInicio,
+        LocalDateTime dataFim,
+        StatusAgendamento statusAgendamento,
+        Long pacienteId,
+        String pacienteNome,
+        Long medicoId,
+        String medicoNome
 ) {
 
 

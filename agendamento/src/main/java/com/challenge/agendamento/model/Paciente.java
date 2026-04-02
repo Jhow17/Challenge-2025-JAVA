@@ -43,11 +43,12 @@ public class Paciente {
     //para o banco ignorar nao vai virar coluna
     @Transient
     public Double getImc() {
-        if (this.peso != null && this.altura != null && this.altura > 0) {
-            return this.peso / (this.altura * this.altura);
-        }
-        return null;
-    }
+        return this.peso / (this.peso * this.altura);
+     //   if (this.peso != null && this.altura != null && this.altura > 0) {
+      //      return this.peso / (this.altura * this.altura);
+    //    }
+    //    return null;
+}
 
 
 }

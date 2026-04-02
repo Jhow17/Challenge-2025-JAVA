@@ -1,10 +1,7 @@
 package com.challenge.agendamento.service;
 
 import com.challenge.agendamento.mapper.AgendamentoMapper;
-import com.challenge.agendamento.model.Agendamento;
-import com.challenge.agendamento.model.AgendamentoResponseDTO;
-import com.challenge.agendamento.model.AgendamentoUpdateRequestDTO;
-import com.challenge.agendamento.model.StatusAgendamento;
+import com.challenge.agendamento.model.*;
 import com.challenge.agendamento.repository.AgendamentoRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -20,21 +17,38 @@ public class AgendamentoService {
     @Autowired
     private AgendamentoRepository agendamentoRepository;
 
+    @Autowired
+    private PacienteService pacienteService;
+
+    @Autowired
+    private MedicoService medicoService;
+
 
     //DONE : metodo criar novo agendamento
-    //O vlaid serve para para verificar se as regras de validacao criadas estao sendo obdecidas pelo
-    public Agendamento criaAgendamento(@Valid Agendamento novoAgendamento){
+    //O Valid serve para para verificar se as regras de validacao criadas estao sendo obdecidas pelo
+    public Agendamento criaAgendamento(@Valid AgendamentoRequestDTO request){
+        try {
+            Paciente paciente = pacienteService.buscarPorId(request.pacienteId());
+            Medico medico = medicoService.buscarPorId(request.medicoId());
 
-        validaIIntervalo(novoAgendamento.getDataInicio(), novoAgendamento.getDataFim());
+            Agendamento novoAgendamento = AgendamentoMapper.toEntity(request);
 
-        verificaConflito(
-                novoAgendamento.getMedico().getId(),
-                novoAgendamento.getDataInicio(),
-                novoAgendamento.getDataFim()
-        );
+            novoAgendamento.setPaciente(paciente);
+            novoAgendamento.setMedico(medico);
 
-        return agendamentoRepository.save(novoAgendamento);
+            validaIIntervalo(novoAgendamento.getDataInicio(), novoAgendamento.getDataFim());
+            verificaConflito(medico.getId(), novoAgendamento.getDataInicio(), novoAgendamento.getDataFim());
 
+            Agendamento agendamentoSalvo = agendamentoRepository.save(novoAgendamento);
+            System.out.println("Agendamento criado com sucesso!");
+
+            return agendamentoSalvo;
+
+        } catch (Exception exception) {
+            System.out.println("Erro ao tentar criar o agendamento.");
+            System.out.println(exception.getMessage());
+            throw exception;
+        }
     }
 
     //DONE : metodo ATUALIZAR um agendamento
@@ -63,7 +77,7 @@ public class AgendamentoService {
         }
 
     }
-
+    // DONE : metodo auxiliar para verificar se o novo Agendamento Conflita
     public void verificaConflito(Long medicoId, LocalDateTime inicio, LocalDateTime fim) {
         boolean temConflito = agendamentoRepository.existSobreposicao(medicoId, inicio, fim);
         if (temConflito){
@@ -84,7 +98,7 @@ public class AgendamentoService {
     //DONE metodo para concluir
     public AgendamentoResponseDTO concluir(Long id){
         Agendamento entity =  agendamentoRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Agendamento nao encontrado"))
+                .orElseThrow(() -> new EntityNotFoundException("Agendamento nao encontrado"));
                 entity.setStatusAgendamento(StatusAgendamento.CONCLUIDO);
                 entity = agendamentoRepository.save(entity);
                 return AgendamentoMapper.toResponse(entity);
