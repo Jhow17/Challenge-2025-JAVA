@@ -1,14 +1,11 @@
 package com.challenge.agendamento.mapper;
 
-import com.challenge.agendamento.model.Agendamento;
-import com.challenge.agendamento.model.AgendamentoResponseDTO;
-import com.challenge.agendamento.model.AgendamentoUpdateRequestDTO;
-import com.challenge.agendamento.model.StatusAgendamento;
+import com.challenge.agendamento.model.*;
 
 import java.time.LocalDateTime;
 
 public class AgendamentoMapper {
-    public static Agendamento toEntity(AgendamentoResponseDTO req){
+    public static Agendamento toEntity(AgendamentoRequestDTO req){
         return Agendamento.builder()
                 .procedimento(req.procedimento())
                 .descricao(req.descricao())
@@ -46,15 +43,13 @@ public class AgendamentoMapper {
                 a.getId(),
                 a.getProcedimento(),
                 a.getDescricao(),
-                a.getPaciente() != null ? a.getPaciente().getId() : null,
-                a.getPaciente() != null ? a.getPaciente() : null,
-                a.getMedico() != null ? a.getMedico().getId() : null,
-                a.getMedico() != null ? a.getMedico() : null,
                 a.getDataInicio(),
                 a.getDataFim(),
                 a.getStatusAgendamento(),
-                a.getCriadoEm(),
-                a.getAtualizadoEm()
+                a.getPaciente() != null ? a.getPaciente().getId() : null,
+                a.getPaciente() != null ? a.getPaciente().getNome() : null,
+                a.getMedico() != null ? a.getMedico().getId() : null,
+                a.getMedico() != null ? a.getMedico().getNome() : null
         );
     }
 

@@ -1,11 +1,15 @@
 package com.challenge.agendamento.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.List;
 
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Entity
 @Table(name = "medicos")
@@ -33,8 +37,6 @@ public class Medico {
     private String cpf;
 
 
-    public Medico() {
-    }
 
 
 
