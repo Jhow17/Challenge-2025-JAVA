@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public interface AgendamentoRepository extends JpaRepository<Agendamento, Long> {
     //lembrar de ser mais comprometido com os commits
@@ -23,6 +24,8 @@ public interface AgendamentoRepository extends JpaRepository<Agendamento, Long> 
             @Param("dataInicio") LocalDateTime dataInicio,
             @Param("dataFim") LocalDateTime dataFim
     );
+
+    List<Agendamento> findByDataInicioBetween(LocalDateTime inicio, LocalDateTime fim);
 
 
 }

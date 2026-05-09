@@ -1,4 +1,4 @@
-package com.challenge.agendamento.model;
+package com.challenge.agendamento.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -13,6 +13,7 @@ public record AgendamentoRequestDTO(
     @NotNull LocalDateTime dataInicio,
     @NotNull LocalDateTime dataFim,
     @NotNull Long pacienteId,
-    @NotNull Long medicoId
+    @NotNull Long medicoId,
+    @NotNull Long colaboradorId
 ){
 }

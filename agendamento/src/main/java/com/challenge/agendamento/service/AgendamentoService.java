@@ -1,15 +1,20 @@
 package com.challenge.agendamento.service;
 
+import com.challenge.agendamento.dto.AgendamentoRequestDTO;
+import com.challenge.agendamento.dto.AgendamentoResponseDTO;
+import com.challenge.agendamento.dto.AgendamentoUpdateRequestDTO;
 import com.challenge.agendamento.mapper.AgendamentoMapper;
 import com.challenge.agendamento.model.*;
 import com.challenge.agendamento.repository.AgendamentoRepository;
+import com.challenge.agendamento.repository.ColaboradorRepository;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AgendamentoService {
@@ -23,15 +28,23 @@ public class AgendamentoService {
     @Autowired
     private MedicoService medicoService;
 
+    @Autowired
+    private ColaboradorRepository colaboradorRepository;
+
 
     //DONE : metodo criar novo agendamento
     //O Valid serve para para verificar se as regras de validacao criadas estao sendo obdecidas pelo
-    public Agendamento criaAgendamento(@Valid AgendamentoRequestDTO request){
+    public AgendamentoResponseDTO criaAgendamento(@Valid AgendamentoRequestDTO request){
         try {
             Paciente paciente = pacienteService.buscarPorId(request.pacienteId());
             Medico medico = medicoService.buscarPorId(request.medicoId());
 
+            Colaborador colaborador = colaboradorRepository.findById(request.colaboradorId())
+                    .orElseThrow(() -> new EntityNotFoundException("Colaborador não encontrado"));
+
             Agendamento novoAgendamento = AgendamentoMapper.toEntity(request);
+
+            novoAgendamento.setColaborador(colaborador);
 
             novoAgendamento.setPaciente(paciente);
             novoAgendamento.setMedico(medico);
@@ -42,7 +55,7 @@ public class AgendamentoService {
             Agendamento agendamentoSalvo = agendamentoRepository.save(novoAgendamento);
             System.out.println("Agendamento criado com sucesso!");
 
-            return agendamentoSalvo;
+            return AgendamentoMapper.toResponse(agendamentoSalvo);
 
         } catch (Exception exception) {
             System.out.println("Erro ao tentar criar o agendamento.");
@@ -110,6 +123,20 @@ public class AgendamentoService {
                 orElseThrow(() -> new EntityNotFoundException("Agendamento nao encontrado"));
         return AgendamentoMapper.toResponse(agendamento);
 
+    }
+
+    public List<AgendamentoResponseDTO> listarTodos() {
+        return agendamentoRepository.findAll()
+                .stream()
+                .map(AgendamentoMapper::toResponse)
+                .collect(Collectors.toList());
+    }
+
+    public void deletar(Long id) {
+        if (!agendamentoRepository.existsById(id)) {
+            throw new EntityNotFoundException("Agendamento não encontrado com o ID: " + id);
+        }
+        agendamentoRepository.deleteById(id);
     }
 
 }

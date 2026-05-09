@@ -7,6 +7,8 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PacienteService {
 
@@ -32,5 +34,16 @@ public class PacienteService {
             System.out.println(exception.getMessage());
             throw exception;
         }
+    }
+
+    public List<Paciente> listarTodos() {
+        return pacienteRepository.findAll();
+    }
+
+    public void deletar(Long id) {
+        if (!pacienteRepository.existsById(id)) {
+            throw new EntityNotFoundException("Paciente não encontrado com o ID: " + id);
+        }
+        pacienteRepository.deleteById(id);
     }
 }

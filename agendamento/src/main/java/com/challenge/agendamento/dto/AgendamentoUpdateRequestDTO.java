@@ -1,4 +1,4 @@
-package com.challenge.agendamento.model;
+package com.challenge.agendamento.dto;
 
 import jakarta.validation.constraints.Size;
 

@@ -1,8 +1,6 @@
-package com.challenge.agendamento.model;
+package com.challenge.agendamento.dto;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
-import org.antlr.v4.runtime.misc.NotNull;
+import com.challenge.agendamento.model.StatusAgendamento;
 
 import java.time.LocalDateTime;
 
@@ -16,7 +14,9 @@ public record AgendamentoResponseDTO(
         Long pacienteId,
         String pacienteNome,
         Long medicoId,
-        String medicoNome
+        String medicoNome,
+        Long colaboradorId,
+        String colaboradorNome
 ) {
 
 

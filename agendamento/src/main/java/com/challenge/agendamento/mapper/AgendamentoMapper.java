@@ -1,5 +1,8 @@
 package com.challenge.agendamento.mapper;
 
+import com.challenge.agendamento.dto.AgendamentoRequestDTO;
+import com.challenge.agendamento.dto.AgendamentoResponseDTO;
+import com.challenge.agendamento.dto.AgendamentoUpdateRequestDTO;
 import com.challenge.agendamento.model.*;
 
 import java.time.LocalDateTime;
@@ -49,7 +52,9 @@ public class AgendamentoMapper {
                 a.getPaciente() != null ? a.getPaciente().getId() : null,
                 a.getPaciente() != null ? a.getPaciente().getNome() : null,
                 a.getMedico() != null ? a.getMedico().getId() : null,
-                a.getMedico() != null ? a.getMedico().getNome() : null
+                a.getMedico() != null ? a.getMedico().getNome() : null,
+                a.getColaborador() != null ? a.getColaborador().getIdColaborador() : null,
+                a.getColaborador() != null ? a.getColaborador().getNome() : null
         );
     }
 

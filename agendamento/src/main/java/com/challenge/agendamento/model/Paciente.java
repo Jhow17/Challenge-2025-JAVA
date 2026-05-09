@@ -24,6 +24,8 @@ public class Paciente {
     @Column(nullable = false, unique = true)
     private String cpf;
 
+    private String email;
+
     private LocalDate dataNascimento;
 
     private String sexo;
@@ -43,7 +45,7 @@ public class Paciente {
     //para o banco ignorar nao vai virar coluna
     @Transient
     public Double getImc() {
-        return this.peso / (this.peso * this.altura);
+        return this.peso / (this.altura * this.altura);
      //   if (this.peso != null && this.altura != null && this.altura > 0) {
       //      return this.peso / (this.altura * this.altura);
     //    }

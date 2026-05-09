@@ -31,9 +31,4 @@ public class Colaborador {
     @JoinColumn(name = "usuario_id", referencedColumnName = "id")
     private Usuario usuario;
 
-
-
-
-
-
 }
